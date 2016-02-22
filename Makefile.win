@@ -1,0 +1,32 @@
+# Project: Linked List
+# Makefile created by Dev-C++ 5.11
+
+CPP      = g++.exe
+CC       = gcc.exe
+WINDRES  = windres.exe
+OBJ      = obj/dlist.o obj/list.o
+LINKOBJ  = obj/dlist.o obj/list.o
+LIBS     = -L"C:/Dev-Cpp/MinGW32/lib" -L"C:/Dev-Cpp/MinGW32/mingw32/lib" -static-libstdc++ -static-libgcc
+INCS     = -I"C:/Dev-Cpp/MinGW32/include" -I"C:/Dev-Cpp/MinGW32/mingw32/include" -I"C:/Dev-Cpp/MinGW32/lib/gcc/mingw32/4.8.1/include"
+CXXINCS  = -I"C:/Dev-Cpp/MinGW32/include" -I"C:/Dev-Cpp/MinGW32/mingw32/include" -I"C:/Dev-Cpp/MinGW32/lib/gcc/mingw32/4.8.1/include" -I"C:/Dev-Cpp/MinGW32/lib/gcc/mingw32/4.8.1/include/c++"
+BIN      = lib/liblinkedlist.a
+CXXFLAGS = $(CXXINCS) 
+CFLAGS   = $(INCS) 
+RM       = rm.exe -f
+
+.PHONY: all all-before all-after clean clean-custom
+
+all: all-before $(BIN) all-after
+
+clean: clean-custom
+	${RM} $(OBJ) $(BIN)
+
+$(BIN): $(LINKOBJ)
+	ar r $(BIN) $(LINKOBJ)
+	ranlib $(BIN)
+
+obj/dlist.o: src/dlist.c
+	$(CC) -c src/dlist.c -o obj/dlist.o $(CFLAGS)
+
+obj/list.o: src/list.c
+	$(CC) -c src/list.c -o obj/list.o $(CFLAGS)
