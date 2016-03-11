@@ -1,34 +1,63 @@
 
+
+/************************************************************************************
+	Implementation of Singly Linked List
+	Author:             Ashis Kumar Das
+	Email:              akd.bracu@gmail.com
+*************************************************************************************/
+
+
+
+
+
+
 #include <stdlib.h>
+#include <string.h>
 #include "list.h"
+
+
+
+
+
+
 
 
 void list_init(List *list, void (*destroy) (void *data)) {
 
 	list->size = 0;
+	list->match = 0;
 	list->destroy = destroy;
 	list->head = NULL;
 	list->tail = NULL;
 
 	return;
-
 }
+
+
+
 
 void list_destroy(List *list) {
 
-	int ret_val;
 	void *data;
+	int removeOpResult;
 
 	while(list_size(list) > 0) {
 
-		ret_val = list_rem_next(list, NULL, &data);
+		removeOpResult = list_rem_next(list, NULL, &data);
 
-		if (ret_val == 0 && list->destroy != NULL)
-			list->destroy(data);
+		/* ret-val = 0 means, an object was removed successfully */
+		if (removeOpResult == 0 && list->destroy != NULL) {
+			list->destroy((void *) data);
+		}
 
 	}
-
+	
+	memset((void *) list, 0, sizeof(List));
+	return;
 }
+
+
+
 
 int list_ins_next(List *list, ListElem *elem, const void *data) {
 
@@ -61,8 +90,10 @@ int list_ins_next(List *list, ListElem *elem, const void *data) {
 	list->size++;
 
 	return 0;
-
 }
+
+
+
 
 int list_rem_next(List *list, ListElem *elem, void **data) {
 
@@ -98,41 +129,44 @@ int list_rem_next(List *list, ListElem *elem, void **data) {
 
 	list->size--;
 
-	free(old_elem);
+	free((void *) old_elem);
 
 	return 0;
-
 }
 
-void list_copy(List *dest, List *src) {
 
-	ListElem *elem_src;
-	ListElem *elem_dest;
 
-	elem_src = list_head(src);
 
-	while (elem_src != NULL) {
+// void list_copy(List *dest, List *src) {
 
-		elem_dest = list_tail(dest);
-		list_ins_next(dest, elem_dest, list_data(elem_src));
-		elem_src = list_next(elem_src);
-	}
-	return;
-}
+	// ListElem *elem_src;
+	// ListElem *elem_dest;
 
-int list_contains(List *list, void *data,
+	// elem_src = list_head(src);
+
+	// while (elem_src != NULL) {
+
+		// elem_dest = list_tail(dest);
+		// list_ins_next(dest, elem_dest, list_data(elem_src));
+		// elem_src = list_next(elem_src);
+	// }
+	// return;
+// }
+
+
+
+
+int list_linearSearch(List *list, void *data,
                   int (*cmp) (const void *data1, const void *data2)) {
 
 	int cmpres;
 	int res;
+	register ListElem *n;
 
-	ListElem *n;
 	res = 0;
-
 	n = list_head(list);
 
 	if (data == NULL) return 0;
-
 	while (n != NULL) {
 
 		cmpres = cmp(data, n->data);
@@ -144,5 +178,4 @@ int list_contains(List *list, void *data,
 	}
 
 	return res;
-
 }

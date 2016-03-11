@@ -1,9 +1,43 @@
 
 
+/************************************************************************************
+	Program Interface (Function Prototypes) of Doubly Linked List
+	Author:             Ashis Kumar Das
+	Email:              akd.bracu@gmail.com
+*************************************************************************************/
+
+
+
+
+
+
 #ifndef DLIST_H_AKD
 #define DLIST_H_AKD
 
+
+
+
+
+
 #include <stdlib.h>
+
+
+
+
+
+
+
+
+
+/*******************************************************************************
+*																			   *
+* ----------------- DEFINE STRUCTURES FOR DOUBLY LINKED LIST ----------------- *
+*																			   *
+*******************************************************************************/
+
+
+
+
 
 struct DListElem_ {
 
@@ -19,7 +53,8 @@ struct DList_ {
 
 	unsigned int size;
 
-	void (*destroy) (void *data);
+	int (*match) (const void *data1, const void *data2);		/* For use on other derived data structures */
+	void (*destroy) (void *data);								/* Called when a DList object is destroyed */
 
 	DListElem *head;
 	DListElem *tail;
@@ -28,11 +63,21 @@ struct DList_ {
 typedef struct DList_ DList;
 
 
+
+
+
+
+
+
 /*******************************************************************************
 *																			   *
 * -------------------------------PUBLIC INTERFACE----------------------------- *
 *																			   *
 *******************************************************************************/
+
+
+
+
 
 void dlist_init(DList *list, void (*destroy)(void *data));
 
@@ -43,6 +88,9 @@ int dlist_ins_next(DList *list, DListElem *elem, const void *data);
 int dlist_ins_prev(DList *list, DListElem *elem, const void *data);
 
 int dlist_remove(DList *list, DListElem *elem, void **data);
+
+
+
 
 
 #define dlist_size(list) ((list)->size)

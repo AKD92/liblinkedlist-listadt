@@ -1,7 +1,26 @@
 
+
+/************************************************************************************
+	Implementation of Doubly Linked List
+	Author:             Ashis Kumar Das
+	Email:              akd.bracu@gmail.com
+*************************************************************************************/
+
+
+
+
+
+
 #include <stdlib.h>
 #include <string.h>
 #include "dlist.h"
+
+
+
+
+
+
+
 
 void dlist_init(DList *list, void (*destroy)(void *data)) {
 
@@ -13,6 +32,9 @@ void dlist_init(DList *list, void (*destroy)(void *data)) {
 	return;
 }
 
+
+
+
 void dlist_destroy(DList *list) {
 
 	void *data;
@@ -23,15 +45,16 @@ void dlist_destroy(DList *list) {
 		removeOpResult = dlist_remove(list, dlist_tail(list), &data);
 
 		if (removeOpResult == 0 && list->destroy != NULL) {
-			list->destroy(data);
+			list->destroy((void *) data);
 		}
 	}
 
-	memset(list, 0, sizeof(DList));
-
+	memset((void *) list, 0, sizeof(DList));
 	return;
-
 }
+
+
+
 
 int dlist_ins_next(DList *list, DListElem *elem, const void *data) {
 
@@ -67,10 +90,11 @@ int dlist_ins_next(DList *list, DListElem *elem, const void *data) {
 	}
 
 	list->size++;
-
 	return 0;
-
 }
+
+
+
 
 int dlist_ins_prev(DList *list, DListElem *elem, const void *data) {
 
@@ -105,10 +129,11 @@ int dlist_ins_prev(DList *list, DListElem *elem, const void *data) {
 	}
 
 	list->size++;
-
 	return 0;
-
 }
+
+
+
 
 int dlist_remove(DList *list, DListElem *elem, void **data) {
 
@@ -137,11 +162,9 @@ int dlist_remove(DList *list, DListElem *elem, void **data) {
 
 	}
 
-	free(elem);
-
+	free((void *) elem);
 	list->size--;
 
 	return 0;
-
 }
 

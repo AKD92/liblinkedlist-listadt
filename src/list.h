@@ -1,16 +1,41 @@
 
 
+/************************************************************************************
+	Program Interface (Function Prototypes) of Singly Linked List
+	Author:             Ashis Kumar Das
+	Email:              akd.bracu@gmail.com
+*************************************************************************************/
+
+
+
+
+
 
 #ifndef LIST_H_AKD
 #define LIST_H_AKD
 
+
+
+
 #include <stdlib.h>
+
+
+
+
+
+
+
+
 
 /*******************************************************************************
 *																			   *
 * ----------------- DEFINE STRUCTURES FOR SINGLY LINKED LIST ----------------- *
 *																			   *
 *******************************************************************************/
+
+
+
+
 
 struct ListElem_ {
 
@@ -25,7 +50,8 @@ struct List_ {
 
 	unsigned int size;
 
-	void (*destroy) (void *data);
+	int (*match) (const void *data1, const void *data2);		/* For use on other derived data structures */
+	void (*destroy) (void *data);								/* Called when a DList object is destroyed */
 
 	ListElem *head;
 	ListElem *tail;
@@ -35,11 +61,19 @@ struct List_ {
 typedef struct List_ List;
 
 
+
+
+
+
 /*******************************************************************************
 *																			   *
 * ----------------------------- PUBLIC INTERFACE ----------------------------- *
 *																			   *
 *******************************************************************************/
+
+
+
+
 
 void list_init(List *list, void (*destroy) (void *data));
 
@@ -49,16 +83,16 @@ int list_ins_next(List *list, ListElem *elem, const void *data);
 
 int list_rem_next(List *list, ListElem *elem, void **data);
 
-void list_copy(List *dest, List *src);
-
 
 /*	Check if *data conatins in the specifed list
 	Returns 1 if contains, 0 if does not
 */
 
-int list_contains(List *list, void *data,
+int list_linearSearch(List *list, void *data,
                   int (*cmp) (const void *data1, const void *data2));
 
+				  
+				  
 #define list_size(list) ((list)->size)
 
 #define list_next(elem) ((elem)->next)
