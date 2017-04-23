@@ -1,9 +1,10 @@
 
 
 /************************************************************************************
-	Implementation of Doubly Linked List
-	Author:             Ashis Kumar Das
-	Email:              akd.bracu@gmail.com
+    Implementation of Doubly Linked List
+    Author:             Ashis Kumar Das
+    Email:              akd.bracu@gmail.com
+    GitHub:             https://github.com/AKD92
 *************************************************************************************/
 
 
@@ -22,14 +23,14 @@
 
 
 
-void dlist_init(DList *list, void (*destroy)(void *data)) {
+int dlist_init(DList *list, void (*destroy)(void *data)) {
 
-	list->size = 0;
-	list->destroy = destroy;
-	list->head = NULL;
-	list->tail = NULL;
+    list->size = 0;
+    list->destroy = destroy;
+    list->head = NULL;
+    list->tail = NULL;
 
-	return;
+    return 0;
 }
 
 
@@ -37,20 +38,20 @@ void dlist_init(DList *list, void (*destroy)(void *data)) {
 
 void dlist_destroy(DList *list) {
 
-	void *data;
-	int removeOpResult;
+    void *data;
+    int removeOpResult;
 
-	while (dlist_size(list) > 0) {
-		
-		removeOpResult = dlist_remove(list, dlist_tail(list), &data);
+    while (dlist_size(list) > 0) {
+        
+        removeOpResult = dlist_remove(list, dlist_tail(list), &data);
 
-		if (removeOpResult == 0 && list->destroy != NULL) {
-			list->destroy((void *) data);
-		}
-	}
+        if (removeOpResult == 0 && list->destroy != NULL) {
+            list->destroy((void *) data);
+        }
+    }
 
-	memset((void *) list, 0, sizeof(DList));
-	return;
+    memset((void *) list, 0, sizeof(DList));
+    return;
 }
 
 
@@ -58,39 +59,39 @@ void dlist_destroy(DList *list) {
 
 int dlist_ins_next(DList *list, DListElem *elem, const void *data) {
 
-	DListElem *new_elem;
+    DListElem *new_elem;
 
-	if (elem == NULL && dlist_size(list) != 0)
-		return -1;
+    if (elem == NULL && dlist_size(list) > 0)
+        return -1;
 
-	new_elem = (DListElem*) malloc(sizeof(DListElem));
-	if (new_elem == 0)
-		return -1;
+    new_elem = (DListElem *) malloc(sizeof(DListElem));
+    if (new_elem == 0)
+        return -1;
 
-	new_elem->data = (void*) data;
+    new_elem->data = (void*) data;
 
-	if (dlist_size(list) == 0) {
+    if (dlist_size(list) == 0) {
 
-		list->head = new_elem;
-		new_elem->next = NULL;
-		new_elem->prev = NULL;
-		list->tail = new_elem;
+        list->head = new_elem;
+        new_elem->next = NULL;
+        new_elem->prev = NULL;
+        list->tail = new_elem;
 
-	} else {
+    } else {
 
-		new_elem->next = elem->next;
-		new_elem->prev = elem;
+        new_elem->next = elem->next;
+        new_elem->prev = elem;
 
-		if (elem->next == NULL)
-			list->tail = new_elem;
-		else
-			elem->next->prev = new_elem;
+        if (elem->next == NULL)
+            list->tail = new_elem;
+        else
+            elem->next->prev = new_elem;
 
-		elem->next = new_elem;
-	}
+        elem->next = new_elem;
+    }
 
-	list->size++;
-	return 0;
+    list->size++;
+    return 0;
 }
 
 
@@ -98,38 +99,39 @@ int dlist_ins_next(DList *list, DListElem *elem, const void *data) {
 
 int dlist_ins_prev(DList *list, DListElem *elem, const void *data) {
 
-	DListElem *new_elem;
+    DListElem *new_elem;
 
-	if (elem == NULL && dlist_size(list) != 0)
-		return -1;
+    if (elem == NULL && dlist_size(list) > 0)
+        return -1;
 
-	if ((new_elem = (DListElem*) malloc(sizeof(DListElem))) == NULL)
-		return -1;
+    new_elem = (DListElem *) malloc(sizeof(DListElem));
+    if (new_elem == 0)
+        return -1;
 
-	new_elem->data = (void*) data;
+    new_elem->data = (void*) data;
 
-	if (dlist_size(list) == 0) {
+    if (dlist_size(list) == 0) {
 
-		list->head = new_elem;
-		list->tail = new_elem;
-		new_elem->next = NULL;
-		new_elem->prev = NULL;
+        list->head = new_elem;
+        list->tail = new_elem;
+        new_elem->next = NULL;
+        new_elem->prev = NULL;
 
-	} else {
+    } else {
 
-		new_elem->next = elem;
-		new_elem->prev = elem->prev;
+        new_elem->next = elem;
+        new_elem->prev = elem->prev;
 
-		if (elem->prev == NULL)
-			list->head = new_elem;
-		else
-			elem->prev->next = new_elem;
+        if (elem->prev == NULL)
+            list->head = new_elem;
+        else
+            elem->prev->next = new_elem;
 
-		elem->prev = new_elem;
-	}
+        elem->prev = new_elem;
+    }
 
-	list->size++;
-	return 0;
+    list->size++;
+    return 0;
 }
 
 
@@ -137,34 +139,32 @@ int dlist_ins_prev(DList *list, DListElem *elem, const void *data) {
 
 int dlist_remove(DList *list, DListElem *elem, void **data) {
 
-	if (elem == NULL || dlist_size(list) == 0)
-		return -1;
+    if (elem == NULL || dlist_size(list) == 0)
+        return -1;
 
-	*data = elem->data;
+    *data = elem->data;
 
-	if (dlist_is_head(elem) == 1) {
+    if (dlist_is_head(elem) == 1) {
 
-		list->head = elem->next;
+        list->head = elem->next;
 
-		if (list->head == NULL)
-			list->tail = NULL;
-		else
-			elem->next->prev = NULL;
+        if (list->head == NULL)
+            list->tail = NULL;
+        else
+            elem->next->prev = NULL;
+    } else {
 
-	} else {
+        elem->prev->next = elem->next;
 
-		elem->prev->next = elem->next;
+        if (elem->next == NULL)
+            list->tail = elem->prev;
+        else
+            elem->next->prev = elem->prev;
+    }
 
-		if (elem->next == NULL)
-			list->tail = elem->prev;
-		else
-			elem->next->prev = elem->prev;
+    free((void *) elem);
+    list->size--;
 
-	}
-
-	free((void *) elem);
-	list->size--;
-
-	return 0;
+    return 0;
 }
 

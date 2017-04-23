@@ -1,9 +1,10 @@
 
 
 /************************************************************************************
-	Implementation of Singly Linked List
-	Author:             Ashis Kumar Das
-	Email:              akd.bracu@gmail.com
+    Implementation of Singly Linked List
+    Author:             Ashis Kumar Das
+    Email:              akd.bracu@gmail.com
+    GitHub:             https://github.com/AKD92
 *************************************************************************************/
 
 
@@ -22,15 +23,15 @@
 
 
 
-void list_init(List *list, void (*destroy) (void *data)) {
+int list_init(List *list, void (*destroy) (void *data)) {
 
-	list->size = 0;
-	list->match = 0;
-	list->destroy = destroy;
-	list->head = NULL;
-	list->tail = NULL;
+    list->size = 0;
+    list->match = 0;
+    list->destroy = destroy;
+    list->head = NULL;
+    list->tail = NULL;
 
-	return;
+    return 0;
 }
 
 
@@ -38,22 +39,20 @@ void list_init(List *list, void (*destroy) (void *data)) {
 
 void list_destroy(List *list) {
 
-	void *data;
-	int removeOpResult;
+    void *data;
+    int removeOpResult;
 
-	while(list_size(list) > 0) {
+    while(list_size(list) > 0) {
+        removeOpResult = list_rem_next(list, NULL, &data);
 
-		removeOpResult = list_rem_next(list, NULL, &data);
-
-		/* ret-val = 0 means, an object was removed successfully */
-		if (removeOpResult == 0 && list->destroy != NULL) {
-			list->destroy((void *) data);
-		}
-
-	}
-	
-	memset((void *) list, 0, sizeof(List));
-	return;
+        /* ret-val = 0 means, an object was removed successfully */
+        if (removeOpResult == 0 && list->destroy != NULL) {
+            list->destroy((void *) data);
+        }
+    }
+    
+    memset((void *) list, 0, sizeof(List));
+    return;
 }
 
 
@@ -61,35 +60,34 @@ void list_destroy(List *list) {
 
 int list_ins_next(List *list, ListElem *elem, const void *data) {
 
-	ListElem *new_elem;
+    ListElem *new_elem;
 
-	new_elem = (ListElem*) malloc(sizeof(ListElem));
-	if (new_elem == 0)
-		return -1;
+    new_elem = (ListElem*) malloc(sizeof(ListElem));
+    if (new_elem == 0)
+        return -1;
 
-	new_elem->data = (void*) data;
+    new_elem->data = (void*) data;
 
-	if (elem == NULL) {
+    if (elem == NULL) {
 
-		if (list_size(list) == 0)
-			list->tail = new_elem;
+        if (list_size(list) == 0)
+            list->tail = new_elem;
 
-		new_elem->next = list->head;
-		list->head = new_elem;
+        new_elem->next = list->head;
+        list->head = new_elem;
 
-	} else {
+    } else {
 
-		if (list_is_tail(list, elem) == 1)
-			list->tail = new_elem;
+        if (list_is_tail(list, elem) == 1)
+            list->tail = new_elem;
 
-		new_elem->next = elem->next;
-		elem->next = new_elem;
+        new_elem->next = elem->next;
+        elem->next = new_elem;
 
-	}
+    }
+    list->size++;
 
-	list->size++;
-
-	return 0;
+    return 0;
 }
 
 
@@ -97,61 +95,40 @@ int list_ins_next(List *list, ListElem *elem, const void *data) {
 
 int list_rem_next(List *list, ListElem *elem, void **data) {
 
-	ListElem *old_elem;
+    ListElem *old_elem;
 
-	if (list_size(list) == 0)
-		return -1;
+    if (list_size(list) == 0)
+        return -1;
 
-	if (elem == NULL) {
+    if (elem == NULL) {
 
-		old_elem = list_head(list);
-		*data = old_elem->data;
+        old_elem = list_head(list);
+        *data = old_elem->data;
 
-		list->head = old_elem->next;
+        list->head = old_elem->next;
 
-		if (list_is_tail(list, old_elem) == 1)
-			list->tail = NULL;
+        if (list_is_tail(list, old_elem) == 1)
+            list->tail = NULL;
 
-	} else {
+    } else {
 
-		if (list_next(elem) == NULL)
-			return -1;
+        if (list_next(elem) == NULL)
+            return -1;
 
-		old_elem = list_next(elem);
-		*data = list_data(old_elem);
+        old_elem = list_next(elem);
+        *data = list_data(old_elem);
 
-		elem->next = old_elem->next;
+        elem->next = old_elem->next;
 
-		if (list_is_tail(list, old_elem) == 1)
-			list->tail = elem;
+        if (list_is_tail(list, old_elem) == 1)
+            list->tail = elem;
 
-	}
+    }
+    list->size--;
+    free((void *) old_elem);
 
-	list->size--;
-
-	free((void *) old_elem);
-
-	return 0;
+    return 0;
 }
-
-
-
-
-// void list_copy(List *dest, List *src) {
-
-	// ListElem *elem_src;
-	// ListElem *elem_dest;
-
-	// elem_src = list_head(src);
-
-	// while (elem_src != NULL) {
-
-		// elem_dest = list_tail(dest);
-		// list_ins_next(dest, elem_dest, list_data(elem_src));
-		// elem_src = list_next(elem_src);
-	// }
-	// return;
-// }
 
 
 
@@ -159,23 +136,22 @@ int list_rem_next(List *list, ListElem *elem, void **data) {
 int list_linearSearch(List *list, void *data,
                   int (*cmp) (const void *data1, const void *data2)) {
 
-	int cmpres;
-	int res;
-	register ListElem *n;
+    int cmpres;
+    int res;
+    register ListElem *n;
 
-	res = 0;
-	n = list_head(list);
+    res = -1;
+    n = list_head(list);
 
-	if (data == NULL) return 0;
-	while (n != NULL) {
+    if (data == NULL) return 0;
+    while (n != NULL) {
 
-		cmpres = cmp(data, n->data);
-		if (cmpres == 0) {
-			res = 1;
-			break;
-		}
-		n = list_next(n);
-	}
-
-	return res;
+        cmpres = cmp(data, n->data);
+        if (cmpres == 0) {
+            res = 0;
+            break;
+        }
+        n = list_next(n);
+    }
+    return res;
 }
