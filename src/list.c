@@ -42,6 +42,9 @@ void list_destroy(List *list) {
     void *data;
     int removeOpResult;
 
+    if (list == NULL)
+        return;
+    
     while(list_size(list) > 0) {
         removeOpResult = list_rem_next(list, NULL, &data);
 
@@ -133,22 +136,24 @@ int list_rem_next(List *list, ListElem *elem, void **data) {
 
 
 
-int list_linearSearch(List *list, void *data,
+int list_linearsearch(List *list, void *data,
                   int (*cmp) (const void *data1, const void *data2)) {
 
     int cmpres;
     int res;
     register ListElem *n;
 
-    res = -1;
+    res = 0;
     n = list_head(list);
 
-    if (data == NULL) return 0;
+    if (data == NULL)
+        return -1;
+    
     while (n != NULL) {
 
         cmpres = cmp(data, n->data);
         if (cmpres == 0) {
-            res = 0;
+            res = 1;
             break;
         }
         n = list_next(n);

@@ -145,7 +145,7 @@ int list_rem_next(List *list, ListElem *elem, void **data);
 
 
 /*
- *  Check if a specific data pointer is already into the linked list or not
+ *  Check if an element is already into the linked list or not.
  *
  *  Parameter:
  *      list        :   Pointer to a singly linked list
@@ -154,10 +154,11 @@ int list_rem_next(List *list, ListElem *elem, void **data);
  *                      will be compared with each other
  *
  *  Returns:
- *      0 if data exists on the linked list, compared with cmp
- *      -1 if data does not exist
+ *      1 if data exists on the linked list, compared with cmp
+ *      0 if data does not exist
+ *      -1 if data is NULL
 */
-int list_linearSearch(List *list, void *data,
+int list_linearsearch(List *list, void *data,
                   int (*cmp) (const void *data1, const void *data2));
 
                   

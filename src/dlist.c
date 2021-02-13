@@ -40,6 +40,9 @@ void dlist_destroy(DList *list) {
 
     void *data;
     int removeOpResult;
+    
+    if (list == NULL)
+        return;
 
     while (dlist_size(list) > 0) {
         

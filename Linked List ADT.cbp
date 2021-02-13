@@ -16,6 +16,8 @@
 				<Compiler>
 					<Add option="-std=c99" />
 					<Add option="-ansi" />
+					<Add option="-O2" />
+					<Add option="-DNDEBUG" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
@@ -31,7 +33,9 @@
 				<Compiler>
 					<Add option="-std=c99" />
 					<Add option="-ansi" />
+					<Add option="-O2" />
 					<Add option="-m64" />
+					<Add option="-DNDEBUG" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
@@ -50,6 +54,14 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="src/list.h" />
+		<Unit filename="src/queue.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/queue.h" />
+		<Unit filename="src/stack.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/stack.h" />
 		<Extensions />
 	</Project>
 </CodeBlocks_project_file>
