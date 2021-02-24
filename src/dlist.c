@@ -24,12 +24,16 @@
 
 
 int dlist_init(DList *list, void (*destroy)(void *data)) {
-
+    
+    if (list == NULL)
+        return -1;
+    
+    memset((void *) list, 0, sizeof(DList));
     list->size = 0;
     list->destroy = destroy;
     list->head = NULL;
     list->tail = NULL;
-
+    
     return 0;
 }
 
@@ -37,23 +41,19 @@ int dlist_init(DList *list, void (*destroy)(void *data)) {
 
 
 void dlist_destroy(DList *list) {
-
+    
     void *data;
-    int removeOpResult;
+    int rem_result;
     
     if (list == NULL)
         return;
-
+    
     while (dlist_size(list) > 0) {
-        
-        removeOpResult = dlist_remove(list, dlist_tail(list), &data);
-
-        if (removeOpResult == 0 && list->destroy != NULL) {
+        rem_result = dlist_remove(list, dlist_tail(list), &data);
+        if (rem_result == 0 && list->destroy != NULL) {
             list->destroy((void *) data);
         }
     }
-
-    memset((void *) list, 0, sizeof(DList));
     return;
 }
 
@@ -63,7 +63,9 @@ void dlist_destroy(DList *list) {
 int dlist_ins_next(DList *list, DListElem *elem, const void *data) {
 
     DListElem *new_elem;
-
+    
+    if (list == NULL)
+        return -1;
     if (elem == NULL && dlist_size(list) > 0)
         return -1;
 
@@ -103,7 +105,9 @@ int dlist_ins_next(DList *list, DListElem *elem, const void *data) {
 int dlist_ins_prev(DList *list, DListElem *elem, const void *data) {
 
     DListElem *new_elem;
-
+    
+    if (list == NULL)
+        return -1;
     if (elem == NULL && dlist_size(list) > 0)
         return -1;
 
@@ -142,6 +146,8 @@ int dlist_ins_prev(DList *list, DListElem *elem, const void *data) {
 
 int dlist_remove(DList *list, DListElem *elem, void **data) {
 
+    if (list == NULL)
+        return -1;
     if (elem == NULL || dlist_size(list) == 0)
         return -1;
 

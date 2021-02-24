@@ -6,33 +6,67 @@
 		<Option pch_mode="2" />
 		<Option compiler="tdm-gcc-32-mingw" />
 		<Build>
-			<Target title="Release">
-				<Option output="lib/x86/linkedlist" prefix_auto="1" extension_auto="1" />
+			<Target title="Debug">
+				<Option output="lib/x86/Debug/linkedlist" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="" />
-				<Option object_output="obj/Release/x86/" />
+				<Option object_output="obj/x86/Debug/" />
 				<Option type="2" />
 				<Option compiler="tdm-gcc-32-mingw" />
 				<Option createDefFile="1" />
 				<Compiler>
 					<Add option="-std=c99" />
-					<Add option="-ansi" />
-					<Add option="-O2" />
-					<Add option="-DNDEBUG" />
+					<Add option="-O0" />
+					<Add option="-g" />
+					<Add option="-m32" />
 				</Compiler>
 				<Linker>
-					<Add option="-s" />
+					<Add option="-m32" />
 				</Linker>
 			</Target>
-			<Target title="Release64">
-				<Option output="lib/x64/linkedlist" prefix_auto="1" extension_auto="1" />
+			<Target title="Debug64">
+				<Option output="lib/x64/Debug/linkedlist" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="" />
-				<Option object_output="obj/Release/x64" />
+				<Option object_output="obj/x64/Debug/" />
 				<Option type="2" />
 				<Option compiler="tdm-gcc-64-mingw-w64" />
 				<Option createDefFile="1" />
 				<Compiler>
 					<Add option="-std=c99" />
-					<Add option="-ansi" />
+					<Add option="-O0" />
+					<Add option="-g" />
+					<Add option="-m64" />
+				</Compiler>
+				<Linker>
+					<Add option="-m64" />
+				</Linker>
+			</Target>
+			<Target title="Release">
+				<Option output="lib/x86/Release/linkedlist" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="" />
+				<Option object_output="obj/x86/Release/" />
+				<Option type="2" />
+				<Option compiler="tdm-gcc-32-mingw" />
+				<Option createDefFile="1" />
+				<Compiler>
+					<Add option="-std=c99" />
+					<Add option="-O2" />
+					<Add option="-m32" />
+					<Add option="-DNDEBUG" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+					<Add option="-m32" />
+				</Linker>
+			</Target>
+			<Target title="Release64">
+				<Option output="lib/x64/Release/linkedlist" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="" />
+				<Option object_output="obj/x64/Release/" />
+				<Option type="2" />
+				<Option compiler="tdm-gcc-64-mingw-w64" />
+				<Option createDefFile="1" />
+				<Compiler>
+					<Add option="-std=c99" />
 					<Add option="-O2" />
 					<Add option="-m64" />
 					<Add option="-DNDEBUG" />
@@ -43,25 +77,29 @@
 				</Linker>
 			</Target>
 		</Build>
+		<VirtualTargets>
+			<Add alias="All" targets="Debug;Debug64;Release;Release64;" />
+		</VirtualTargets>
 		<Compiler>
 			<Add option="-Wall" />
+			<Add directory="include" />
 		</Compiler>
+		<Unit filename="include/dlist.h" />
+		<Unit filename="include/list.h" />
+		<Unit filename="include/queue.h" />
+		<Unit filename="include/stack.h" />
 		<Unit filename="src/dlist.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="src/dlist.h" />
 		<Unit filename="src/list.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="src/list.h" />
 		<Unit filename="src/queue.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="src/queue.h" />
 		<Unit filename="src/stack.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="src/stack.h" />
 		<Extensions />
 	</Project>
 </CodeBlocks_project_file>
