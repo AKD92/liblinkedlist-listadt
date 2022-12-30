@@ -269,11 +269,13 @@ int list_rem_next(List *list, ListElem *elem, void **data);
  *  Parameter:
  *      list        :   Pointer to a singly linked list
  *      data        :   Pointer to a data element which is being searched
- *      fpCompare   :   Pointer to a comparison function by which the data elements
+ *      elem        :   Pointer to a ListElem pointer which will point to the element container found,
+ *                      If not found, it won't be touched and will contain original value.
+ *      comparator  :   Pointer to a comparison function by which the data elements
  *                      will be compared with each other
  *
  *  Returns:
- *      1 if data exists on the linked list, compared with cmp
+ *      1 if data exists on the linked list
  *      0 if data does not exist
  *      -1 if data is NULL
 */
@@ -281,7 +283,8 @@ int list_search
 (
     List *list,
     void *data,
-    int (*fpCompare) (const void *data1, const void *data2)
+    ListElem **elem,
+    int (*comparator) (const void *data1, const void *data2)
 );
 
 

@@ -294,5 +294,32 @@ int dlist_remove(DList *list, DListElem *elem, void **data);
 
 
 
+
+/*
+ *  Check if an element exists into the linked list or not.
+ *
+ *  Parameter:
+ *      list        :   Pointer to a doubly linked list
+ *      data        :   Pointer to a data element which is being searched
+ *      elem        :   Pointer to a DListElem pointer which will point to the element container found,
+ *                      If not found, it won't be touched and will contain original value.
+ *      comparator  :   Pointer to a comparison function by which the data elements
+ *                      will be compared with each other
+ *
+ *  Returns:
+ *      1 if data exists on the linked list
+ *      0 if data does not exist
+ *      -1 if data is NULL
+*/
+int dlist_search
+(
+    DList *list,
+    void *data,
+    DListElem **elem,
+    int (*comparator) (const void *data1, const void *data2)
+);
+
+
+
 #endif
 

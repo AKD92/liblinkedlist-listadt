@@ -177,3 +177,33 @@ int dlist_remove(DList *list, DListElem *elem, void **data) {
     return 0;
 }
 
+
+
+
+int dlist_search
+(
+    DList *list,
+    void *data,
+    DListElem **elem,
+    int (*comparator) (const void *data1, const void *data2)
+) {
+    int cmpres, res;
+    register DListElem *n;
+    
+    res = 0;
+    n = dlist_head(list);
+    
+    if (data == NULL)
+        return -1;
+    
+    while (n != NULL) {
+        cmpres = comparator(data, n->data);
+        if (cmpres == 0) {
+            *elem = n;
+            res = 1;
+            break;
+        }
+    }
+    return res;
+}
+

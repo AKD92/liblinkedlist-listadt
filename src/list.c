@@ -167,7 +167,8 @@ int list_search
 (
     List *list,
     void *data,
-    int (*fpCompare) (const void *data1, const void *data2)
+    ListElem **elem,
+    int (*comparator) (const void *data1, const void *data2)
 ) {
 
     int cmpres;
@@ -182,8 +183,9 @@ int list_search
     
     while (n != NULL) {
 
-        cmpres = fpCompare(data, n->data);
+        cmpres = comparator(data, n->data);
         if (cmpres == 0) {
+            *elem = n;
             res = 1;
             break;
         }
